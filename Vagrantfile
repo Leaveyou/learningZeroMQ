@@ -18,8 +18,8 @@ Vagrant.configure("2") do |config|
 
   	## proxy configuration
 	if Vagrant.has_plugin?("vagrant-proxyconf")
-		config.proxy.http     = "http://proxy.mama.local:8080"
-		config.proxy.https    = "http://proxy.mama.local:8080"
+		config.proxy.http     = "http://proxy.avangate.local:8080"
+		config.proxy.https    = "http://proxy.avangate.local:8080"
 		config.proxy.no_proxy = "localhost,127.0.0.1,infra,.local"
 	end
 	
@@ -31,7 +31,10 @@ Vagrant.configure("2") do |config|
 
 	## provisioning scripts  
 	config.vm.provision "shell", inline: <<-SHELL
-		apt install git
+        apt update
+		apt install -y build-essential libtool autoconf uuid-dev php5 php5-dev pkg-config git libzmq3 libzmq3-dev
+        echo "" | pecl install zmq-beta
+        echo "extension=zmq.so" > /etc/php5/cli/conf.d/zmq.ini
 	SHELL
 
 ##	config.vm.provision "shell" do |s|
